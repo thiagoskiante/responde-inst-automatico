@@ -1,7 +1,8 @@
 import axios, { AxiosError } from 'axios';
 
 const TOKEN = process.env.META_PAGE_ACCESS_TOKEN;
-const BASE_URL = 'https://graph.facebook.com/v19.0';
+const PAGE_ID = process.env.META_PAGE_ID || 'me';
+const BASE_URL = 'https://graph.facebook.com/v25.0';
 
 interface MetaMessagePayload {
   recipient: { id: string };
@@ -25,7 +26,7 @@ export async function enviarMensagem(
   };
 
   try {
-    await axios.post(`${BASE_URL}/me/messages`, payload, {
+    await axios.post(`${BASE_URL}/${PAGE_ID}/messages`, payload, {
       params: { access_token: TOKEN },
     });
   } catch (error: unknown) {

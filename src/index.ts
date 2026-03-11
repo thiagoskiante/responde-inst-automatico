@@ -36,6 +36,87 @@ app.get('/', (_req: Request, res: Response) => {
   res.status(200).json({ status: 'ok', bot: 'Responde Inst Automático' });
 });
 
+// ── Política de Privacidade ──────────────────────────────
+app.get('/privacy', (_req: Request, res: Response) => {
+  res.send(`<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Política de Privacidade - Responde Inst Automático</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 700px; margin: 40px auto; padding: 0 20px; color: #333; line-height: 1.6; }
+    h1 { color: #1a1a1a; }
+    h2 { color: #444; margin-top: 30px; }
+  </style>
+</head>
+<body>
+  <h1>Política de Privacidade</h1>
+  <p><strong>Última atualização:</strong> 11 de março de 2026</p>
+
+  <h2>1. Dados coletados</h2>
+  <p>Este aplicativo ("Responde Inst Automático") processa mensagens diretas (DMs) recebidas via Instagram para gerar respostas automáticas. Não armazenamos o conteúdo das mensagens de forma permanente.</p>
+
+  <h2>2. Como usamos os dados</h2>
+  <p>As mensagens recebidas são enviadas à API do Claude (Anthropic) exclusivamente para gerar uma resposta. Após o envio da resposta, a mensagem não é retida.</p>
+
+  <h2>3. Compartilhamento</h2>
+  <p>Não vendemos, alugamos ou compartilhamos dados pessoais com terceiros, exceto conforme necessário para o funcionamento do serviço (API do Claude para geração de respostas).</p>
+
+  <h2>4. Segurança</h2>
+  <p>Utilizamos conexões seguras (HTTPS) e variáveis de ambiente protegidas para armazenar credenciais.</p>
+
+  <h2>5. Seus direitos</h2>
+  <p>Você pode solicitar a exclusão de seus dados a qualquer momento entrando em contato conosco ou acessando <a href="/data-deletion">/data-deletion</a>.</p>
+
+  <h2>6. Contato</h2>
+  <p>Para dúvidas sobre esta política, entre em contato via DM no Instagram.</p>
+</body>
+</html>`);
+});
+
+// ── Exclusão de Dados ────────────────────────────────────
+app.get('/data-deletion', (_req: Request, res: Response) => {
+  res.send(`<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exclusão de Dados - Responde Inst Automático</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 700px; margin: 40px auto; padding: 0 20px; color: #333; line-height: 1.6; }
+    h1 { color: #1a1a1a; }
+    h2 { color: #444; margin-top: 30px; }
+    .box { background: #f0f8f0; border: 1px solid #4CAF50; border-radius: 8px; padding: 20px; margin: 20px 0; }
+  </style>
+</head>
+<body>
+  <h1>Exclusão de Dados</h1>
+  <p><strong>Última atualização:</strong> 11 de março de 2026</p>
+
+  <div class="box">
+    <h2>Este app não armazena seus dados</h2>
+    <p>O Responde Inst Automático <strong>não armazena</strong> mensagens, dados pessoais ou qualquer informação de forma permanente. As mensagens são processadas em tempo real e descartadas imediatamente após o envio da resposta.</p>
+  </div>
+
+  <h2>Como solicitar exclusão</h2>
+  <p>Caso deseje confirmar que nenhum dado seu está armazenado, entre em contato via DM no Instagram. Responderemos em até 48 horas.</p>
+
+  <h2>Confirmação</h2>
+  <p>Como não retemos dados, não há dados a serem excluídos. Sua privacidade é respeitada por design.</p>
+</body>
+</html>`);
+});
+
+// ── Callback de exclusão de dados (Meta exige POST) ──────
+app.post('/data-deletion', (req: Request, res: Response) => {
+  const confirmationCode = 'DEL-' + Date.now();
+  res.json({
+    url: 'https://responde-inst-automatico-production.up.railway.app/data-deletion',
+    confirmation_code: confirmationCode,
+  });
+});
+
 // ── Verificação do Webhook (Meta exige) ────────────────
 app.get('/webhook', (req: Request, res: Response) => {
   const mode = req.query['hub.mode'] as string | undefined;

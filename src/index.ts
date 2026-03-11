@@ -154,12 +154,18 @@ interface InstagramWebhookBody {
 
 // ── Receber Mensagens do Instagram ─────────────────────
 app.post('/webhook', (req: Request, res: Response) => {
+  // Log do payload bruto para debug
+  console.log('📨 Webhook recebido:', JSON.stringify(req.body, null, 2));
+
   const body = req.body as InstagramWebhookBody;
 
   // Retornar 200 imediatamente para evitar timeout da Meta
   res.sendStatus(200);
 
-  if (body.object !== 'instagram') return;
+  if (body.object !== 'instagram') {
+    console.log('⚠️ Objeto não é instagram:', body.object);
+    return;
+  }
 
   for (const entry of body.entry) {
     const messaging = entry.messaging || [];

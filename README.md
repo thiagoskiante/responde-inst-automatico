@@ -2,7 +2,7 @@
 
 Bot que responde DMs do Instagram automaticamente usando inteligencia artificial (Claude).
 
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/github/thiagoskiante/responde-inst-automatico)
+**Deploy rapido:** [Abra o Railway](https://railway.app/new) > clique em "GitHub Repository" > selecione `responde-inst-automatico`
 
 ---
 
@@ -77,9 +77,12 @@ Antes de comecar, voce precisa criar contas em 3 lugares (todas sao gratuitas pa
 
 ### Passo 4 — Fazer deploy no Railway
 
-1. Clique no botao **"Deploy on Railway"** no topo desta pagina
-2. Se ainda nao tem conta no Railway, crie uma (e gratuito)
-3. O Railway vai criar o projeto automaticamente
+1. Acesse **railway.app** e crie uma conta (e gratuito — $5 de credito por mes)
+2. No painel, clique em **New Project**
+3. Clique em **Deploy from GitHub repo**
+4. Se for sua primeira vez, conecte sua conta do GitHub ao Railway
+5. Procure e selecione o repositorio **responde-inst-automatico**
+6. O Railway vai detectar o projeto e comecar o deploy automaticamente
 
 ---
 

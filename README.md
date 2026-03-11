@@ -2,7 +2,7 @@
 
 Bot que responde DMs do Instagram automaticamente usando inteligencia artificial (Claude).
 
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template?template=https%3A%2F%2Fgithub.com%2Fthiagoskiante%2Fresponde-inst-automatico&envs=ANTHROPIC_API_KEY%2CMETA_PAGE_ACCESS_TOKEN%2CMETA_VERIFY_TOKEN)
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/github/thiagoskiante/responde-inst-automatico)
 
 ---
 

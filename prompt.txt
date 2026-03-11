@@ -1,0 +1,22 @@
+# ========================================
+# MODO AVANÇADO — Escreva seu prompt aqui!
+# ========================================
+#
+# Este arquivo é para quem quer CONTROLE TOTAL sobre como o bot se comporta.
+# Escreva o prompt completo abaixo, exatamente como você quer que o Claude siga.
+#
+# COMO USAR:
+# 1. Apague estas linhas de comentário (ou deixe, elas são ignoradas)
+# 2. Escreva suas instruções abaixo
+# 3. Salve o arquivo e reinicie o servidor
+#
+# IMPORTANTE: Se este arquivo tiver conteúdo (além de comentários),
+# ele tem PRIORIDADE sobre o config.txt
+#
+# EXEMPLO (descomente as linhas abaixo removendo o #):
+#
+# Você é o assistente da Loja XYZ no Instagram.
+# Quando alguém mandar mensagem, seja simpático e pergunte como pode ajudar.
+# Se a pessoa demonstrar interesse em comprar, envie o link: https://lojaxyz.com
+# Responda sempre em português brasileiro.
+# Máximo 3 frases por resposta.

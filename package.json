@@ -1,0 +1,24 @@
+{
+  "name": "responde-inst-automatico",
+  "version": "1.0.0",
+  "description": "Bot de resposta automática para DMs do Instagram com Claude AI",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "npx ts-node src/index.ts",
+    "dev": "npx ts-node src/index.ts"
+  },
+  "keywords": ["instagram", "bot", "claude", "ai", "dm"],
+  "license": "MIT",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "axios": "^1.7.0",
+    "dotenv": "^16.4.0",
+    "express": "^4.21.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.0.0",
+    "ts-node": "^10.9.0",
+    "typescript": "^5.7.0"
+  }
+}

@@ -1,0 +1,19 @@
+# ========================================
+# MODO SIMPLES — Configure seu bot aqui!
+# ========================================
+#
+# Preencha os campos abaixo com as informações do seu negócio.
+# O bot vai usar essas informações para responder as DMs automaticamente.
+#
+# COMO USAR:
+# 1. Substitua os valores de exemplo pelos seus dados
+# 2. Salve o arquivo
+# 3. Reinicie o servidor
+#
+# DICA: Linhas que começam com # são ignoradas (são comentários)
+
+NOME_DO_BOT=Ana
+PERSONALIDADE=Seja simpática, direta e profissional.
+OBJETIVO=Qualificar leads interessados no meu curso de tráfego pago.
+LINK_DE_VENDA=https://seulink.com
+MENSAGEM_FINAL=Para saber mais, acesse o link acima!

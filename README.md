@@ -93,7 +93,8 @@ No painel do Railway, va na aba **Variables** e adicione estas 3 variaveis:
 | Variavel | Valor |
 |----------|-------|
 | `ANTHROPIC_API_KEY` | A chave que voce copiou no Passo 1 (comeca com `sk-ant-...`) |
-| `META_PAGE_ACCESS_TOKEN` | O token que voce copiou no Passo 3 |
+| `META_PAGE_ACCESS_TOKEN` | O token da **Pagina** que voce copiou no Passo 3 (nao o token de usuario!) |
+| `META_PAGE_ID` | O ID numerico da sua Pagina do Facebook (veja no Graph API Explorer: `me?fields=id` com a Pagina selecionada) |
 | `META_VERIFY_TOKEN` | Escolha uma senha secreta qualquer (ex: `minha-senha-2026`) |
 
 Clique em **Deploy** para aplicar as variaveis.
@@ -204,6 +205,11 @@ Voce esqueceu de preencher alguma variavel de ambiente no Railway. Veja o Passo 
 
 - Verifique se a assinatura do campo `messages` esta ativa nos Webhooks da Meta
 - Confira se sua conta Instagram e Business ou Creator (nao pessoal)
+- Confira se o Instagram esta **conectado a uma Pagina do Facebook** (Pagina > Configuracoes > Instagram)
+- Confira se voce usou o **token da Pagina** (nao o token de usuario) no Railway
+- Confira se a variavel `META_PAGE_ID` esta preenchida com o ID correto da Pagina
+- Inscreva a Pagina no webhook: POST `{PAGE_ID}/subscribed_apps?subscribed_fields=messages` no Graph API Explorer (com token da Pagina)
+- Se o app esta em modo desenvolvimento, ele so recebe webhooks de teste do painel Meta
 - Veja os logs no Railway para mensagens de erro
 
 ### 4. Resposta demora muito
@@ -224,9 +230,11 @@ Antes de considerar o bot pronto, verifique:
 - [ ] Conta Instagram e Business ou Creator
 - [ ] App criado na Meta Developers
 - [ ] Permissao `instagram_manage_messages` aprovada
-- [ ] Token do Instagram salvo no Railway (`META_PAGE_ACCESS_TOKEN`)
+- [ ] Token da **Pagina** salvo no Railway (`META_PAGE_ACCESS_TOKEN`)
+- [ ] ID da Pagina salvo no Railway (`META_PAGE_ID`)
 - [ ] Chave da Anthropic salva no Railway (`ANTHROPIC_API_KEY`)
 - [ ] Token de verificacao salvo no Railway (`META_VERIFY_TOKEN`)
+- [ ] Pagina inscrita no webhook (POST `{PAGE_ID}/subscribed_apps?subscribed_fields=messages`)
 - [ ] Webhook configurado e verificado na Meta
 - [ ] Assinatura do campo `messages` ativada
 - [ ] Bot personalizado (config.txt ou prompt.txt editado)

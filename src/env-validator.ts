@@ -3,6 +3,7 @@ import 'dotenv/config';
 const REQUIRED_VARS = [
   'ANTHROPIC_API_KEY',
   'META_PAGE_ACCESS_TOKEN',
+  'META_PAGE_ID',
   'META_VERIFY_TOKEN',
 ] as const;
 

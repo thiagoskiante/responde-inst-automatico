@@ -30,17 +30,14 @@ export async function enviarMensagem(
       params: { access_token: TOKEN },
     });
   } catch (error: unknown) {
-    if (error instanceof AxiosError) {
-      const data = error.response?.data as MetaErrorResponse | undefined;
-      const metaMessage =
-        data?.error?.message || error.message;
-      console.error(
-        `❌ Erro ao enviar mensagem para Instagram: ${metaMessage}`
-      );
-    } else {
-      console.error(
-        `❌ Erro ao enviar mensagem para Instagram: ${String(error)}`
-      );
-    }
+    const metaMessage =
+      error instanceof AxiosError
+        ? (error.response?.data as MetaErrorResponse | undefined)?.error
+            ?.message || error.message
+        : String(error);
+    console.error(
+      `❌ Erro ao enviar mensagem para Instagram: ${metaMessage}`
+    );
+    throw new Error(`Falha ao enviar mensagem: ${metaMessage}`);
   }
 }

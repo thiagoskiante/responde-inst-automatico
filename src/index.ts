@@ -138,18 +138,80 @@ interface InstagramMessage {
   is_echo?: boolean;
 }
 
-interface InstagramMessagingEvent {
+interface WebhookChangeValue {
+  sender: { id: string };
+  recipient?: { id: string };
+  timestamp?: string;
+  message?: InstagramMessage;
+}
+
+interface WebhookChange {
+  field: string;
+  value: WebhookChangeValue;
+}
+
+interface WebhookMessagingEvent {
   sender: { id: string };
   message?: InstagramMessage;
 }
 
-interface InstagramEntry {
-  messaging?: InstagramMessagingEvent[];
+interface WebhookEntry {
+  id?: string;
+  time?: number;
+  changes?: WebhookChange[];
+  messaging?: WebhookMessagingEvent[];
 }
 
-interface InstagramWebhookBody {
-  object: string;
-  entry: InstagramEntry[];
+interface WebhookBody {
+  object?: string;
+  entry?: WebhookEntry[];
+}
+
+// ── Extrair mensagens do payload (suporta ambos formatos) ──
+function extractMessages(
+  body: WebhookBody
+): Array<{ senderId: string; messageId: string; text: string }> {
+  const messages: Array<{
+    senderId: string;
+    messageId: string;
+    text: string;
+  }> = [];
+
+  if (!body.entry) return messages;
+
+  for (const entry of body.entry) {
+    // Formato 1: entry[].changes[] (Instagram API real)
+    if (entry.changes) {
+      for (const change of entry.changes) {
+        if (change.field !== 'messages') continue;
+        const val = change.value;
+        if (!val.message || !val.message.text) continue;
+        if (val.message.is_echo) continue;
+
+        messages.push({
+          senderId: val.sender.id,
+          messageId: val.message.mid,
+          text: val.message.text,
+        });
+      }
+    }
+
+    // Formato 2: entry[].messaging[] (formato antigo/documentação)
+    if (entry.messaging) {
+      for (const event of entry.messaging) {
+        if (!event.message || !event.message.text) continue;
+        if (event.message.is_echo) continue;
+
+        messages.push({
+          senderId: event.sender.id,
+          messageId: event.message.mid,
+          text: event.message.text,
+        });
+      }
+    }
+  }
+
+  return messages;
 }
 
 // ── Receber Mensagens do Instagram ─────────────────────
@@ -157,44 +219,32 @@ app.post('/webhook', (req: Request, res: Response) => {
   // Log do payload bruto para debug
   console.log('📨 Webhook recebido:', JSON.stringify(req.body, null, 2));
 
-  const body = req.body as InstagramWebhookBody;
+  const body = req.body as WebhookBody;
 
   // Retornar 200 imediatamente para evitar timeout da Meta
   res.sendStatus(200);
 
-  if (body.object !== 'instagram') {
-    console.log('⚠️ Objeto não é instagram:', body.object);
+  const messages = extractMessages(body);
+
+  if (messages.length === 0) {
+    console.log('⚠️ Nenhuma mensagem encontrada no payload');
     return;
   }
 
-  for (const entry of body.entry) {
-    const messaging = entry.messaging || [];
-
-    for (const event of messaging) {
-      // Ignorar mensagens do próprio bot
-      if (!event.message || event.message.is_echo) continue;
-
-      // Ignorar mensagens sem texto
-      if (!event.message.text) continue;
-
-      const messageId = event.message.mid;
-      const senderId = event.sender.id;
-      const texto = event.message.text;
-
-      // Deduplicação
-      if (isDuplicate(messageId)) {
-        console.log(`🔄 Mensagem duplicada ignorada: ${messageId}`);
-        continue;
-      }
-
-      console.log(`📩 DM recebida de ${senderId}: ${texto}`);
-
-      // Processar de forma assíncrona (não bloqueia o loop)
-      processMessage(senderId, texto).catch((err: unknown) => {
-        const message = err instanceof Error ? err.message : String(err);
-        console.error(`❌ Erro ao processar mensagem: ${message}`);
-      });
+  for (const msg of messages) {
+    // Deduplicação
+    if (isDuplicate(msg.messageId)) {
+      console.log(`🔄 Mensagem duplicada ignorada: ${msg.messageId}`);
+      continue;
     }
+
+    console.log(`📩 DM recebida de ${msg.senderId}: ${msg.text}`);
+
+    // Processar de forma assíncrona (não bloqueia o loop)
+    processMessage(msg.senderId, msg.text).catch((err: unknown) => {
+      const message = err instanceof Error ? err.message : String(err);
+      console.error(`❌ Erro ao processar mensagem: ${message}`);
+    });
   }
 });
 
